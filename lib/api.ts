@@ -1,6 +1,7 @@
 import fs from 'fs'
 import { join } from 'path'
 import matter from 'gray-matter'
+const config = require('../next.config');
 
 const postsDirectory = join(process.cwd(), '_posts')
 
@@ -34,6 +35,9 @@ export function getPostBySlug(slug: string, fields: string[] = []) {
     }
   })
 
+  let itemString = JSON.stringify(items);
+  itemString = itemString.replaceAll(/\$\{basePath\}/gi, config.basePath);
+  items = JSON.parse(itemString);
   return items
 }
 
