@@ -19,7 +19,7 @@ export function getPostBySlug(slug: string, fields: string[] = []) {
     [key: string]: string
   }
 
-  const items: Items = {}
+  var items: Items = {}
 
   // Ensure only the minimal needed data is exposed
   fields.forEach((field) => {
