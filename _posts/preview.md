@@ -4,8 +4,8 @@ excerpt: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmo
 coverImage: '${basePath}/assets/blog/preview/cover.jpg'
 date: '2020-03-16T05:35:07.322Z'
 author:
-  name: Joe Haddad
-  picture: '${basePath}/assets/blog/authors/joe.jpeg'
+  name: Inti Mateus
+  picture: '${basePath}/assets/blog/authors/gif.gif'
 ogImage:
   url: '${basePath}/assets/blog/preview/cover.jpg'
 ---
