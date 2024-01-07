@@ -4,7 +4,7 @@ excerpt: 'Recently I encountered a bug working on a new feature, it turned out t
 coverImage: '${basePath}/assets/blog/dynamic-routing/gif.gif'
 date: '2020-03-16T05:35:07.322Z'
 author:
-  name: JJ Kasper
+  name: Inti Albuquerque
   picture: '${basePath}/assets/blog/authors/gif.gif'
 ogImage:
   url: '${basePath}/assets/blog/dynamic-routing/gif.gif'
