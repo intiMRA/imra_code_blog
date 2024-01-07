@@ -1,36 +1,35 @@
 .markdown {
-  @apply text-lg text-grey-darkest leading-normal;
-  & > * + *,  & li + li, & li > p + p {
-    @apply mt-6;
-  }
-  & strong {
-    @apply text-black font-bold;
-  }
-  & a {
-    @apply text-black font-semibold;
-  }
-  & strong a {
-    @apply font-bold;
-  }
-  & h2 {
-    @apply leading-tight text-xl font-bold text-black mb-2 mt-10;
-  }
-  & h3 {
-    @apply leading-tight text-lg font-bold text-black mt-8 -mb-2;
-  }
-  & code {
-    @apply font-mono text-sm inline bg-grey-lighter px-1;
-  }
-  & pre code {
-    @apply block bg-black p-4 rounded;
-  }
-  & blockquote {
-    @apply border-l-4 border-grey-light pl-4 italic;
-  }
-  & ul, & ol {
-    @apply pl-5;
-    @screen sm {
-      @apply pl-10;
-    }
-  }
+  @apply text-lg leading-relaxed;
+}
+
+.markdown p,
+.markdown ul,
+.markdown ol,
+.markdown blockquote {
+  @apply my-6;
+}
+
+.markdown h2 {
+  @apply text-3xl mt-12 mb-4 leading-snug;
+}
+
+.markdown h3 {
+  @apply text-2xl mt-8 mb-4 leading-snug;
+}
+
+.markdown strong {
+  @apply text-black font-bold;
+}
+
+.markdown a {
+  @apply text-black font-semibold;
+}
+.markdown code {
+  @apply font-mono text-sm inline bg-grey-lighter px-1;
+}
+.markdown pre code {
+  @apply block bg-black p-4 rounded;
+}
+.markdown blockquote {
+  @apply border-l-4 border-grey-light pl-4 italic;
 }
