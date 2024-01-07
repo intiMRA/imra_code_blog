@@ -22,7 +22,7 @@
 }
 
 .markdown a {
-  @apply text-blue font-semibold;
+  @apply text-lg font-semibold;
 }
 .markdown code {
   @apply font-mono text-sm inline px-1;
