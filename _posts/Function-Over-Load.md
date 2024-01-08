@@ -24,4 +24,5 @@ extension Animal {
     func eat(food: String = "corn") {
         self.eat(food: food)
     }
-}```
+}
+```
