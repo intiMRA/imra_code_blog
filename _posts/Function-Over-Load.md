@@ -16,9 +16,9 @@ Recently I encountered a bug working on a new feature, it turned out to do with 
 
 When calling a specific function, we were getting an unexpected outcome. It turned out it was because we added a default parameter to a function that was being overloaded, the fix was simple but it took a long time to find out what was happening. Now after doing some investigation, it became even more clear why inheritance needs to be used with extreme care to prevent unknown behavior in your code. When overloading functions with default arguments, Here is what I learned:
 
-- The function with the smallest number of parameters will be prioritised.
-- The functions in the super class will be prioritized
-- Inheritance and default arguments are a double edged sword
+* The function with the smallest number of parameters will be prioritised.
+* The functions in the super class will be prioritized
+* Inheritance and default arguments are a double edged sword
 
 ## Deep Dive
 
