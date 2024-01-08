@@ -24,12 +24,4 @@
 .markdown a {
   @apply text-blue-500 font-semibold;
 }
-.markdown code {
-  @apply font-mono text-sm inline px-1;
-}
-.markdown pre code {
-  @apply block bg-black p-4 rounded;
-}
-.markdown blockquote {
-  @apply border-l-4 pl-4 italic;
-}
+
