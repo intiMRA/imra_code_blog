@@ -25,3 +25,81 @@
   @apply text-blue-500 font-semibold;
 }
 
+/**
+ * ------------------------------------------------------
+ *  Codeblocks
+ * ------------------------------------------------------
+ */
+ .markdown code {
+  @apply text-gray-300 font-mono;
+}
+.markdown :not(pre) > code {
+  @apply text-gray-900 font-medium whitespace-nowrap;
+}
+
+.markdown .dimer-highlight pre {
+  @apply subpixel-antialiased;
+}
+.markdown .dimer-highlight {
+  @apply relative bg-gray-900 rounded-md pt-6 pb-8 overflow-x-auto;
+}
+
+/**
+ * ------------------------------------------------------
+ *  Codeblocks Highlighted lines
+ * ------------------------------------------------------
+ */
+.markdown .dimer-highlight:hover .line.dim {
+  @apply opacity-100;
+}
+.markdown .dimer-highlight .line {
+  @apply px-8 relative;
+}
+.markdown .dimer-highlight .line.dim {
+  @apply opacity-40 transition-opacity;
+}
+.markdown .dimer-highlight .line.highlight-delete {
+  @apply border-l-4 border-red-500;
+  background-color: rgb(244 63 94/.15);
+}
+.markdown .dimer-highlight .line.highlight-delete:before {
+  @apply text-red-500 absolute font-mono content-['-'] left-[10px];
+}
+.markdown .dimer-highlight .line.highlight-insert {
+  @apply border-l-4 border-green-500;
+  background-color: rgb(45 212 191/.15);
+}
+.markdown .dimer-highlight .line.highlight-insert:before {
+  @apply text-green-500 absolute font-mono left-[10px] content-['+'];
+}
+
+/**
+ * ------------------------------------------------------
+ *  Codeblocks with title
+ * ------------------------------------------------------
+ */
+.markdown .dimer-highlight .ctc-action {
+  @apply absolute right-0 mr-6 text-gray-600 mt-2 hover:text-gray-300 z-20 transition-colors hidden lg:block;
+}
+
+/**
+ * ------------------------------------------------------
+ *  Codegroups
+ * ------------------------------------------------------
+ */
+.markdown .codegroup {
+  @apply relative bg-gray-900 rounded-md overflow-hidden;
+}
+.markdown .codegroup-tabs {
+  @apply flex px-8 scroll-pl-8 relative overflow-x-scroll py-6 -mx-4;
+}
+.markdown .codegroup .dimer-highlight {
+  @apply pt-0;
+}
+
+.markdown .codegroup-tabs a {
+  @apply text-gray-600 rounded-xl font-mono text-sm font-semibold no-underline py-1.5 px-4 whitespace-nowrap relative z-20 transition-colors hover:text-gray-300;
+}
+.markdown .codegroup-tabs a.active {
+  @apply text-gray-300;
+}
