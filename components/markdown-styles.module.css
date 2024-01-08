@@ -31,7 +31,7 @@
  * ------------------------------------------------------
  */
  .markdown code {
-  @apply text-gray-300 font-mono;
+  @apply text-gray-600 font-mono;
 }
 .markdown :not(pre) > code {
   @apply text-gray-900 font-medium whitespace-nowrap;
