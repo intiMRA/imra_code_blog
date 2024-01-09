@@ -60,3 +60,24 @@ class GoldenRetriever: Dog {
     }
 }
 ```
+
+In this example we have a protocol, 'Animal', a class, 'Dog', that implements that protocol and another class, 'GoldenRetriever', that extends 'Dog'. We have lots of overloading functions here with default arguments, a recipe for ambiguity an disasters!
+Have a think what the output of the following code is going to be:
+
+```swift
+let animal: Animal = Dog(name: "Sasha")
+animal.eat()
+let dog = Dog(name: "Rex")
+dog.eat()
+let retriever = GoldenRetriever(name: "Max")
+retriever.eat()
+```
+
+Chances are you are confused on what it will output, don't worry I did to. This is what we get:
+
+1. Sasha eats corn everyday
+2. Rex eats dog food everyday
+3. Max eats dog food everyday
+
+Number one is calling the function on the extension of the 'Animal' protocol which then calls the ```func eat(food: String = "dog food")``` on the 'Dog' Class with the food argument being 'corn'. Hence the output 'Sasha eats corn everyday'.
+Number two and three print both call the ```func eat(food: String = "dog food")``` on 'Dog' class, which might be unexpected for the 'GoldenRetriever' object since the only function in the class is ```override func eat(food: String = "dog food", kgs: Double = 1.1)```.
