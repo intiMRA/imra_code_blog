@@ -5,7 +5,7 @@ coverImage: '${basePath}/assets/blog/function-overload/cover.png'
 date: '2020-03-16T05:35:07.322Z'
 author:
   name: Inti Albuquerque
-  picture: '${basePath}/assets/blog/authors/gif.gif'
+  picture: '${basePath}/assets/blog/authors/inti.jpg'
 ogImage:
   url: '${basePath}/assets/blog/function-overload/cover.png'
 ---
