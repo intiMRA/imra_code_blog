@@ -22,7 +22,9 @@ When calling a specific function, we were getting an unexpected outcome. It turn
 
 ## Deep Dive
 
-To show what I learned I will provide some code examples: 
+### Overloading
+
+For those who do not know, function overloading is when a class has two or more functions with the same name but different parameter:
 
 ```swift
 class Dog {
@@ -31,6 +33,77 @@ class Dog {
     init(name: String) {
         self.name = name
     }
+    
+    func eat() {
+        print("A Dog named \(name) eats food everyday")
+    }
+    
+    func eat(food: String = "dog food") {
+        print("A Dog named \(name) eats \(food) everyday")
+    }
+}
+let dog = Dog(name: "Rex")
+dog.eat()
+```
+
+In the example above we have two functions called ```eat```. And if we call the ```eat``` function without parameter it will print 'A Dog named Rex eats food everyday', this might be what you expect, but it is still somewhat confusing.
+
+### Subclassing
+
+Now consider the following examples, what do you think it will print?
+
+```swift
+class Dog {
+    let name: String
+    
+    init(name: String) {
+        self.name = name
+    }
+    func eat() {
+        print("A Dog named \(name) eats food everyday")
+    }
+}
+
+class GoldenRetriever: Dog {
+    func eat(food: String = "dog food") {
+        print("A GoldenRetriever named \(name) eats \(food) everyday")
+    }
+let dog = Dog(name: "Rex")
+dog.eat()
+let retriever = GoldenRetriever(name: "Max")
+retriever.eat()
+}
+```
+
+In this example we have a protocol a class, 'Dog' and another class, 'GoldenRetriever', that extends 'Dog'. We have overloading functions here with default arguments, a recipe for ambiguity!
+
+Chances are you are confused on what it will output, don't worry I did too. This is what we get:
+
+1. A Dog named Rex eats food everyday
+2. A Dog named Max eats food everyday
+
+Both call the ```func eat()``` on 'Dog' class, which might be unexpected for the 'GoldenRetriever' object since the only function in the class is ```func eat(food: String = "dog food")```. I seems like the function with the least parameters are prioritised. Now what happens if we add the food parameter?
+
+```swift
+let dog = Dog(name: "Rex")
+dog.eat()
+let retriever = GoldenRetriever(name: "Max")
+retriever.eat(food: "watermelon")
+```
+
+1. A Dog named Rex eats food everyday
+2. A GoldenRetriever named Max eats watermelon everyday
+
+Number one is calling the ```func eat()``` on the 'Dog' class, and now number two in calling ```func eat(food: String = "dog food")``` on the 'GoldenRetriever' class. Having a required parameter makes it more obvious what function will be called, especially if we are overriding an oveloaded function like so:
+
+```swift
+class Dog {
+    let name: String
+    
+    init(name: String) {
+        self.name = name
+    }
+    
     func eat() {
         print("A Dog named \(name) eats food everyday")
     }
@@ -45,36 +118,23 @@ class GoldenRetriever: Dog {
         print("A GoldenRetriever named \(name) eats \(food) everyday")
     }
 }
-```
 
-In this example we have a protocol a class, 'Dog' and another class, 'GoldenRetriever', that extends 'Dog'. We have lots of overloading functions here with default arguments, a recipe for ambiguity an disasters!
-Have a think what the output of the following code is going to be:
-
-```swift
 let dog = Dog(name: "Rex")
 dog.eat()
 let retriever = GoldenRetriever(name: "Max")
 retriever.eat()
 ```
 
-Chances are you are confused on what it will output, don't worry I did to. This is what we get:
-
-1. A Dog named Rex eats food everyday
-2. A Dog named Max eats food everyday
-
-Both call the ```func eat()``` on 'Dog' class, which might be unexpected for the 'GoldenRetriever' object since the only function in the class is ```override func eat(food: String = "dog food")```. I seems like the function with the least parameters are prioritised. Now what happens if we add the food parameter?
+This is again will print 'A Dog named Rex/Max eats food everyday' for both of these calls, so a better idea would be to remove the default parameter at least in the sub class.
 
 ```swift
-let dog = Dog(name: "Rex")
-dog.eat(food: "corn")
-let retriever = GoldenRetriever(name: "Max")
-retriever.eat(food: "watermelon")
+class GoldenRetriever: Dog {
+    override func eat(food: String) {
+        print("A GoldenRetriever named \(name) eats \(food) everyday")
+    }
 ```
 
-1. A Dog named Rex eats corn everyday
-2. A GoldenRetriever named Max eats watermelon everyday
-
-Number one is calling the ```func eat(food: String = "dog food")``` on the 'Dog' class, and now number two in calling ```func eat(food: String = "dog food")``` on the 'GoldenRetriever' class.
+Now it is less ambiguous what function is being called because the argument is required.
 
 ## DisfavoredOverload
 
@@ -105,17 +165,17 @@ let retriever = GoldenRetriever(name: "Max")
 retriever.eat()
 ```
 
-Note that the ```func eat(food: String = "dog food")``` is now removed because the compiler now complains that this is ambiguous code when calling 'eat' without any arguments. This is because both eat functions that are not disfavoredOverloaded both have the same number of parameters therefore we do not have a proper hierarchy to follow.
+Note that the ```func eat(food: String = "dog food")``` is now removed because the compiler now complains that this is ambiguous code when calling 'eat' without any arguments. This is because both eat functions that do not use '_disfavoredOverload' have the same number of parameters therefore we do not have a proper hierarchy to follow.
 
 The code above will output:
 
-1. A Dog named Rex eats corn everyday
+1. A Dog named Rex eats food everyday
 2. A GoldenRetriever named Max eats dog food everyday
 
-Number one calls ```func eat()``` on the 'Dog' class since it is the only eat function in that class. However, number two calls ```func eat(food: String = "dog food")``` in the GoldenRetriever class because it is now the favored overload function.
+Number one calls ```func eat()``` on the 'Dog' class since it is the only eat function in that class. However, number two calls ```func eat(food: String = "dog food")``` in the GoldenRetriever class because it is now the'favored overload' function.
 
 ## Take Aways
 
-What I learned is that that function overload + default parameters + inheritance is a recipe for disaster. If you overload functions, you should make at most one function with default arguments, all other functions should require parameters to be passed in so we can avoid ambiguity. Another take away is that when overriding a function from a superclass, it is best to not use default parameters to assure that the caller knows that they are calling the correct function and not another function in the super class. Lastly if you must use function overload, using @_disfavoredOverload could be useful to control function priority.
+What I learned is that that function overload + default parameters + inheritance is a recipe for ambiguity. If you overload functions, you should make at most one function with default arguments, all other functions should require parameters to be passed in so we can avoid ambiguity. Another take away is that when overriding a function from a superclass, it is best to not use default parameters to assure that the caller knows that they are calling the correct function and not another function in the super class. Lastly if you must use function overload, using @_disfavoredOverload could be useful to control function priority.
 
 Hopefully you enjoyed the reading! and again the code used in this article can be found [here](https://github.com/intiMRA/Function-Overload-Swift/blob/main/Contents.swift).
