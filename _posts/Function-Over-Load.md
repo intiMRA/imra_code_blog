@@ -1,6 +1,6 @@
 ---
-title: 'Function Oveverload In Class Extensions Swift'
-excerpt: 'Recently I encountered a bug working on a new feature, it turned out to do with a function that was being overloaded form a super class with preset arguments. In this article I will be sharing what I learned and provide some ideas on how to prevent this issue.'
+title: 'Method Oveverload In Subclasses Swift'
+excerpt: 'Recently I encountered a bug working on a new feature, it turned out to do with a method that was being overloaded form a super class with default arguments. In this article I will be sharing what I learned and provide some ideas on how to prevent this issue.'
 coverImage: '${basePath}/assets/blog/function-overload/cover.png'
 date: '2024-01-10T01:00:00Z'
 author:
@@ -10,21 +10,21 @@ ogImage:
   url: '${basePath}/assets/blog/function-overload/cover.png'
 ---
 
-Recently I encountered a bug working on a new feature, it turned out to do with a function that was being overloaded form a super class with default arguments. In this article I will be sharing what I learned and provide some ideas on how to prevent this issue. You can find the code [here](https://github.com/intiMRA/Function-Overload-Swift/blob/main/Contents.swift). Let's get into it!
+Recently I encountered a bug working on a new feature, it turned out to do with a method that was being overloaded form a super class with default arguments. In this article I will be sharing what I learned and provide some ideas on how to prevent this issue. You can find the code [here](https://github.com/intiMRA/Function-Overload-Swift/blob/main/Contents.swift). Let's get into it!
 
 ## The Problem
 
-When calling a specific function, we were getting an unexpected outcome. It turned out it was because we added a default parameter to a function that was being overloaded, the fix was simple but it took a long time to find out what was happening. Now after doing some investigation, it became even more clear why inheritance needs to be used with extreme care to prevent unknown behaviour in your code. When overloading functions with default arguments, Here is what I learned:
+When calling a specific method, we were getting an unexpected outcome. It turned out it was because we added a default parameter to a method that was being overloaded, the fix was simple but it took a long time to find out what was happening. Now after doing some investigation, it became even more clear why inheritance needs to be used with extreme care to prevent unknown behaviour in your code. When overloading methods with default arguments, Here is what I learned:
 
-* The function with the smallest number of parameters will be prioritised.
-* The functions in the super class will be prioritised
+* The method with the smallest number of parameters will be prioritised.
+* The methods in the super class will be prioritised
 * Inheritance and default arguments are a double edged sword
 
 ## Deep Dive
 
 ### Overloading
 
-For those who do not know, function overloading is when a class has two or more functions with the same name but different parameter:
+For those who do not know, method overloading is when a class has two or more methods with the same name but different parameter:
 
 ```swift
 class Dog {
@@ -46,7 +46,7 @@ let dog = Dog(name: "Rex")
 dog.eat()
 ```
 
-In the example above we have two functions called ```eat```. And if we call the ```eat``` function without parameter it will print 'A Dog named Rex eats food everyday', this might be what you expect, but it is still somewhat confusing.
+In the example above we have two methods called ```eat```. And if we call the ```eat``` method without parameter it will print 'A Dog named Rex eats food everyday', this might be what you expect, but it is still somewhat confusing.
 
 ### Subclassing
 
@@ -75,14 +75,14 @@ retriever.eat()
 }
 ```
 
-In this example we have a protocol a class, 'Dog' and another class, 'GoldenRetriever', that extends 'Dog'. We have overloading functions here with default arguments, a recipe for ambiguity!
+In this example we have a protocol a class, 'Dog' and another class, 'GoldenRetriever', that is a subclass of 'Dog'. We have overloading methods here with default arguments, a recipe for ambiguity!
 
 Chances are you are confused on what it will output, don't worry I did too. This is what we get:
 
 1. A Dog named Rex eats food everyday
 2. A Dog named Max eats food everyday
 
-Both call the ```func eat()``` on 'Dog' class, which might be unexpected for the 'GoldenRetriever' object since the only function in the class is ```func eat(food: String = "dog food")```. I seems like the function with the least parameters are prioritised. Now what happens if we add the food parameter?
+Both call the ```func eat()``` on 'Dog' class, which might be unexpected for the 'GoldenRetriever' object since the only method in the class is ```func eat(food: String = "dog food")```. I seems like the method with the least parameters are prioritised. Now what happens if we add the food parameter?
 
 ```swift
 let dog = Dog(name: "Rex")
@@ -94,7 +94,7 @@ retriever.eat(food: "watermelon")
 1. A Dog named Rex eats food everyday
 2. A GoldenRetriever named Max eats watermelon everyday
 
-Number one is calling the ```func eat()``` on the 'Dog' class, and now number two in calling ```func eat(food: String = "dog food")``` on the 'GoldenRetriever' class. Having a required parameter makes it more obvious what function will be called, especially if we are overriding an oveloaded function like so:
+Number one is calling the ```func eat()``` on the 'Dog' class, and now number two in calling ```func eat(food: String = "dog food")``` on the 'GoldenRetriever' class. Having a required parameter makes it more obvious what method will be called, especially if we are overriding an oveloaded method like so:
 
 ```swift
 class Dog {
@@ -134,11 +134,11 @@ class GoldenRetriever: Dog {
     }
 ```
 
-Now it is less ambiguous what function is being called because the argument is required.
+Now it is less ambiguous what method is being called because the argument is required.
 
 ## DisfavoredOverload
 
-One way to control what function gets prioritised, it's to use '@_disfavoredOverload' like so:
+One way to control what method gets prioritised, it's to use '@_disfavoredOverload' like so:
 
 ```swift
 class Dog {
@@ -165,17 +165,17 @@ let retriever = GoldenRetriever(name: "Max")
 retriever.eat()
 ```
 
-Note that the ```func eat(food: String = "dog food")``` is now removed because the compiler now complains that this is ambiguous code when calling 'eat' without any arguments. This is because both eat functions that do not use '_disfavoredOverload' have the same number of parameters therefore we do not have a proper hierarchy to follow.
+Note that the ```func eat(food: String = "dog food")``` is now removed because the compiler now complains that this is ambiguous code when calling 'eat' without any arguments. This is because both eat methods that do not use '_disfavoredOverload' have the same number of parameters therefore we do not have a proper hierarchy to follow.
 
 The code above will output:
 
 1. A Dog named Rex eats food everyday
 2. A GoldenRetriever named Max eats dog food everyday
 
-Number one calls ```func eat()``` on the 'Dog' class since it is the only eat function in that class. However, number two calls ```func eat(food: String = "dog food")``` in the GoldenRetriever class because it is now the'favored overload' function.
+Number one calls ```func eat()``` on the 'Dog' class since it is the only eat method in that class. However, number two calls ```func eat(food: String = "dog food")``` in the GoldenRetriever class because it is now the'favored overload' method.
 
 ## Take Aways
 
-What I learned is that that function overload + default parameters + inheritance is a recipe for ambiguity. If you overload functions, you should make at most one function with default arguments, all other functions should require parameters to be passed in so we can avoid ambiguity. Another take away is that when overriding a function from a superclass, it is best to not use default parameters to assure that the caller knows that they are calling the correct function and not another function in the super class. Lastly if you must use function overload, using @_disfavoredOverload could be useful to control function priority.
+What I learned is that that method overload + default parameters + inheritance is a recipe for ambiguity. If you overload methods, you should make at most one method with default arguments, all other methods should require parameters to be passed in so we can avoid ambiguity. Another take away is that when overriding a method from a superclass, it is best to not use default parameters to assure that the caller knows that they are calling the correct method and not another method in the super class. Lastly if you must use method overload, using @_disfavoredOverload could be useful to control method priority.
 
 Hopefully you enjoyed the reading! and again the code used in this article can be found [here](https://github.com/intiMRA/Function-Overload-Swift/blob/main/Contents.swift).
