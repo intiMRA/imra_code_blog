@@ -1,6 +1,6 @@
 ---
 title: 'Method Oveverload In Subclasses Swift'
-excerpt: 'Recently I encountered a bug working on a new feature, it turned out to do with a method that was being overloaded form a super class with default arguments. In this article I will be sharing what I learned and provide some ideas on how to prevent this issue.'
+excerpt: 'Recently I encountered a bug working on a new feature, it turned out to do with a method that was being overloaded from a superclass with default arguments. In this article, I will be sharing what I learned and provide some ideas on how to prevent this issue.'
 coverImage: '${basePath}/assets/blog/function-overload/cover.png'
 date: '2024-01-10T01:00:00Z'
 author:
