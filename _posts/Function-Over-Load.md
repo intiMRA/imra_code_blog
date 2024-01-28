@@ -10,15 +10,15 @@ ogImage:
   url: '${basePath}/assets/blog/function-overload/cover.png'
 ---
 
-Recently I encountered a bug working on a new feature, it turned out to do with a method that was being overloaded form a super class with default arguments. In this article I will be sharing what I learned and provide some ideas on how to prevent this issue. You can find the code [here](https://github.com/intiMRA/Function-Overload-Swift/blob/main/Contents.swift). Let's get into it!
+Recently I encountered a bug working on a new feature, it turned out to do with a method that was being overloaded from a superclass with default arguments. In this article, I will be sharing what I learned and provide some ideas on how to prevent this issue. You can find the code [here](https://github.com/intiMRA/Function-Overload-Swift/blob/main/Contents.swift). Let's get into it!
 
 ## The Problem
 
 When calling a specific method, we were getting an unexpected outcome. It turned out it was because we added a default parameter to a method that was being overloaded, the fix was simple but it took a long time to find out what was happening. Now after doing some investigation, it became even more clear why inheritance needs to be used with extreme care to prevent unknown behaviour in your code. When overloading methods with default arguments, Here is what I learned:
 
-* The method with the smallest number of parameters will be prioritised.
-* The methods in the super class will be prioritised
-* Inheritance and default arguments are a double edged sword
+1. The method with the smallest number of parameters will be prioritised.
+2. The methods in the super class will be prioritised
+3. Inheritance and default arguments are a double edged sword
 
 ## Deep Dive
 
