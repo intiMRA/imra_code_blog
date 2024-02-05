@@ -74,7 +74,7 @@ protocol NavigationDestination: Equatable, Hashable { }
     }
     
     func popToRoot() {
-        stack.removeLast(stack.count - 1)
+        stack.removeLast(stack.count)
     }
 }
 ```
