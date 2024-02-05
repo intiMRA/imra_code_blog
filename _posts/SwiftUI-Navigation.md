@@ -5,7 +5,7 @@ coverImage: '${basePath}/assets/blog/swiftUI-navigation/cover.png'
 date: '2024-01-10T01:00:00Z'
 author:
   name: Inti Albuquerque
-  picture: '${basePath}/assets/blog/swiftUI-navigation/cover.png'
+  picture: '${basePath}/assets/blog/authors/inti.jpg'
 ogImage:
   url: '${basePath}/assets/blog/swiftUI-navigation/cover.png'
 ---
@@ -114,7 +114,7 @@ This way we do not need to repeat this same code whenever we require to navigate
 
 ### Putting It To Use
 
-For simplicity I created a two views called FirstView and Second view that are mostly identical for this example. both these views have a view model that takes in a text and each view also has its own color so we can distinguish which view is which. The Content View can navigate to any of these two views, and the two views can navigate between each other.
+For simplicity I created a two views called FirstView and Second view that are mostly identical for this example, I will also cut down on the code a little to make the article more concise you can always check the entire code on my GitHub. both these views have a view model that takes in a text and each view also has its own color so we can distinguish which view is which. The Content View can navigate to any of these two views, and the two views can navigate between each other.
 
 ```swift
 struct ContentView: View {
@@ -174,8 +174,72 @@ struct FirstView: View {
 
 The second View is essentially the same. We have ```@Environment(Router.self) var router```, this is being injected from the ```navigator``` function so we can push more views into the stack. Another thing to note in that we do not need to add the ```navigator``` to the second View because it is in the hierarchy from the ContentView. Here is how it looks like:
 
-![Fig 1](/imra_code_blog/assets/blog/swiftUI-navigation/recording-1)
+![Fig 1](/imra_code_blog/assets/blog/swiftUI-navigation/recording-1.gif)
+
+### Extending Functionality
+
+These changes make it really easy to add another route that we can navigate to like so:
+
+we add a new enum to represent the new destinations
+
+```swift
+enum SecondaryDestination: NavigationDestination {
+    case thirdView(ThirdViewModel)
+    case forthView(ForthViewModel)
+}
+```
+
+We add another View extension for the view creation
+
+```swift
+func secondaryNavigator(router: Router) -> some View {
+    self
+        .navigationDestination(for: SecondaryDestination.self) { destination in
+            switch destination {
+            case .thirdView(let viewModel):
+                ThirdView(viewModel: viewModel)
+                    .environment(router)
+            case .forthView(let viewModel):
+                ForthView(viewModel: viewModel)
+                    .environment(router)
+            }
+        }
+}
+```
+
+and now we can update our first and second View to use it:
+
+```swift
+struct FirstView: View {
+    @Environment(Router.self) var router
+    @State var viewModel: FirstViewModel
+    var body: some View {
+            VStack {
+                Text(viewModel.text)
+                    .bold()
+                
+                Button("Navigate to SecondView") {
+                    router.navigate(to: PrimaryDestination.secondView(.init(text: "second view from first view")))
+                }
+                Button("Navigate to Third") {
+                    router.navigate(to: SecondaryDestination.thirdView(.init(text: "third view from first view")))
+                }
+                Button("Navigate to Forth") {
+                    router.navigate(to: SecondaryDestination.forthView(.init(text: "forth view from first view")))
+                }
+            }
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
+            .background(.pink)
+            .secondaryNavigator(router: router)
+    }
+}
+```
+
+And this is how it looks like:
+
+![Fig 2](/imra_code_blog/assets/blog/swiftUI-navigation/recording-2.gif)
 
 ## Take Aways
 
+SwiftUI stack navigation improved the way to navigate between views a lot better! If we make the way we navigate in between views implicit we can elevate it even further, this way we can avoid unwanted behaviour and enforce well structured and understandable code.
 Hopefully you enjoyed the reading! and again the code used in this article can be found [here](https://github.com/intiMRA/SwiftUINavigation/tree/main/Navigation).
