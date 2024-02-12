@@ -1,6 +1,6 @@
 ---
 title: 'SwiftUI Navigation'
-excerpt: 'Recently I was playing around with navigation in SwiftUI, and came up with a way to navigate between screens using the iOS 16 stack navigation feature. I found it interesting and decided to share.'
+excerpt: 'Recently I was playing around with navigation in SwiftUI and came up with a way to navigate between screens using the iOS 16 stack navigation feature. I found it interesting and decided to share.'
 coverImage: '${basePath}/assets/blog/swiftUI-navigation/cover.png'
 date: '2024-01-10T01:00:00Z'
 author:
@@ -10,11 +10,11 @@ ogImage:
   url: '${basePath}/assets/blog/swiftUI-navigation/cover.png'
 ---
 
-Recently I was playing around with navigation in SwiftUI, and came up with a way to navigate between screens using the iOS 16 stack navigation feature. I found it interesting and decided to share, you can find the code [here](https://github.com/intiMRA/SwiftUINavigation/tree/main/Navigation). Let's set sail!
+Recently I was playing around with navigation in SwiftUI and came up with a way to navigate between screens using the iOS 16 stack navigation feature. I found it interesting and decided to share, you can find the code [here](https://github.com/intiMRA/SwiftUINavigation/tree/main/Navigation). Let's set sail!
 
 ## The Problem
 
-While stack navigation in SwiftUI is awesome, it is easy to use it in a chaotic way. here is that I mean:
+While stack navigation in SwiftUI is awesome, it is easy to use it chaotically. here is what I mean:
 Imagine you have to navigate to a View that requires a viewModel, you could implement the navigation in this way:
 
 ```swift
@@ -46,11 +46,11 @@ struct ContentView: View {
 }
 ```
 
-This works, but it seems like a recipe for chaos where you would have to check all these string manually and make sure all cases are covered. It also makes it difficult to reuse this navigation for other views, one would have to duplicate the ```navigationDestination``` basically everywhere we need to use it potentially leading to unexpected behaviour once we have a deeper view hierarchy. My solution is to:
+This works, but it seems like a recipe for chaos where you would have to check all these strings manually and make sure all cases are covered. It also makes it difficult to reuse this navigation for other views, one would have to duplicate the ```navigationDestination``` basically everywhere we need to use it potentially leading to unexpected behaviour once we have a deeper view hierarchy. My solution is to:
   
 1. Wrap the NavigationStack into a Router
 2. use enums to represent the views
-3. have a centralised place to handle the navigation
+3. have a centralized place to handle the navigation
 
 ## Deep Dive
 
@@ -79,7 +79,7 @@ protocol NavigationDestination: Equatable, Hashable { }
 }
 ```
 
-After I created an enum to represent the Views that can be pushed on to the stack:
+After I created an enum to represent the Views that can be pushed onto the stack:
 
 ```swift
 enum Destination: NavigationDestination {
@@ -88,7 +88,7 @@ enum Destination: NavigationDestination {
 }
 ```
 
-At the beginning I had the ```navigate to destination``` function take in a ```Destination```, however this would require all navigation destinations to be part of the same enum, making it hard to distinguish between different navigation flows, so I went with the ```NavigationDestination``` protocol instead. Having the navigation destinations represented in this way makes it easier create the views later on without having to check for string constants.
+In the beginning, I had the ```navigate to destination``` function take in a ```Destination```, however, this would require all navigation destinations to be part of the same enum, making it hard to distinguish between different navigation flows, so I went with the ```NavigationDestination``` protocol instead. Having the navigation destinations represented in this way makes it easier to create the views later on without having to check for string constants.
 
 ### Centralising View Creation
 
@@ -110,11 +110,11 @@ The next idea I had was to extract the ```navigationDestination``` function and 
     }
 ```
 
-This way we do not need to repeat this same code whenever we require to navigate to these views form another entry point. Note that this function takes in a router as a parameter, this is so we can pass we can enable navigation for the sub views.
+This way we do not need to repeat this same code whenever we are required to navigate to these views from another entry point. Note that this function takes in a router as a parameter, this is so we can enable navigation for the sub-views.
 
 ### Putting It To Use
 
-For simplicity I created a two views called FirstView and Second view that are mostly identical for this example, I will also cut down on the code a little to make the article more concise you can always check the entire code on my GitHub. both these views have a view model that takes in a text and each view also has its own color so we can distinguish which view is which. The Content View can navigate to any of these two views, and the two views can navigate between each other.
+For simplicity I created two views called FirstView and Second View that are mostly identical for this example, I will also cut down on the code a little to make the article more concise you can always check the entire code on my GitHub. both these views have a view model that takes in a text and each view also has its own color so we can distinguish which view is which. The Content View can navigate to any of these two views, and the two views can navigate between each other.
 
 ```swift
 struct ContentView: View {
@@ -172,7 +172,7 @@ struct FirstView: View {
 }
 ```
 
-The second View is essentially the same. We have ```@Environment(Router.self) var router```, this is being injected from the ```navigator``` function so we can push more views into the stack. Another thing to note in that we do not need to add the ```navigator``` to the second View because it is in the hierarchy from the ContentView. Here is how it looks like:
+The second View is essentially the same. We have ```@Environment(Router.self) var router```, this is being injected from the ```navigator``` function so we can push more views into the stack. Another thing to note is that we do not need to add the ```navigator``` to the second View because it is in the hierarchy from the ContentView. Here is what it looks like:
 
 ![Fig 1](/imra_code_blog/assets/blog/swiftUI-navigation/recording-1.gif)
 
@@ -207,7 +207,7 @@ func secondaryNavigator(router: Router) -> some View {
 }
 ```
 
-and now we can update our first and second View to use it:
+And now we can update our first and second View to use it:
 
 ```swift
 struct FirstView: View {
@@ -235,11 +235,11 @@ struct FirstView: View {
 }
 ```
 
-And this is how it looks like:
+Here is what it looks like:
 
 ![Fig 2](/imra_code_blog/assets/blog/swiftUI-navigation/recording-2.gif)
 
 ## Take Aways
 
-SwiftUI stack navigation improved the way to navigate between views a lot better! If we make the way we navigate in between views implicit we can elevate it even further, this way we can avoid unwanted behaviour and enforce well structured and understandable code.
-Hopefully you enjoyed the reading! and again the code used in this article can be found [here](https://github.com/intiMRA/SwiftUINavigation/tree/main/Navigation).
+SwiftUI stack navigation improved the way to navigate between views a lot better! If we make the way we navigate in between views implicit we can elevate it even further, this way we can avoid unwanted behaviour and enforce well-structured and understandable code.
+Hopefully, you enjoyed the reading! and again the code used in this article can be found [here](https://github.com/intiMRA/SwiftUINavigation/tree/main/Navigation).
