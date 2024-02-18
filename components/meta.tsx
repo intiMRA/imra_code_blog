@@ -27,7 +27,7 @@ const Meta = () => {
         href="/favicon/safari-pinned-tab.svg"
         color="#000000"
       />
-      <link rel="shortcut icon" href="/favicon/favicon.ico" />
+      <link rel="shortcut icon" type="image/x-icon" href="/public/favicon/favicon.ico?" />
       <meta name="msapplication-TileColor" content="#000000" />
       <meta name="msapplication-config" content="/favicon/browserconfig.xml" />
       <meta name="theme-color" content="#000" />
@@ -37,6 +37,7 @@ const Meta = () => {
         content={`A blog where I post coding articles.`}
       />
       <meta property="og:image" content={HOME_OG_IMAGE_URL} />
+      <meta property='twitter:image' content={HOME_OG_IMAGE_URL} />
     </Head>
   )
 }

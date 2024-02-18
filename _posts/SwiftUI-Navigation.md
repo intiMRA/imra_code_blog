@@ -56,16 +56,19 @@ This works, but it seems like a recipe for chaos where you would have to check a
 
 ### Router
 
-The first step I took was to create a router. This is just an observable object that wraps the navigation stack and has a few helper functions. I also made a protocol to facilitate the usage of the helper functions:
+The first step I took was to create a router. This is just an observable object that wraps the navigation stack and has a few helper functions. I also made a enum representing the views that can be pushed into the stack:
 
 ```swift
-protocol NavigationDestination: Equatable, Hashable { }
+enum Destination: Hashable {
+    case firstView(FirstViewModel)
+    case secondView(SecondViewModel)
+}
 
 @Observable class Router {
    
     var stack = NavigationPath()
     
-    func navigate(to destination: any NavigationDestination) {
+    func navigate(to destination: Destination) {
         stack.append(destination)
     }
     
@@ -79,16 +82,7 @@ protocol NavigationDestination: Equatable, Hashable { }
 }
 ```
 
-After I created an enum to represent the Views that can be pushed onto the stack:
-
-```swift
-enum Destination: NavigationDestination {
-    case firstView(FirstViewModel)
-    case secondView(SecondViewModel)
-}
-```
-
-In the beginning, I had the ```navigate to destination``` function take in a ```Destination```, however, this would require all navigation destinations to be part of the same enum, making it hard to distinguish between different navigation flows, so I went with the ```NavigationDestination``` protocol instead. Having the navigation destinations represented in this way makes it easier to create the views later on without having to check for string constants.
+Note that the enum take a viewModel as a parameter, this will make our lives easier later if we have to pass in different data depending on where we are navigating from. However, this is not always necessary. Having the destinations being represented as an enum  provides an easy way to create views later on without having to check for string constants.
 
 ### Centralising View Creation
 
@@ -178,24 +172,32 @@ The second View is essentially the same. We have ```@Environment(Router.self) va
 
 ### Extending Functionality
 
-These changes make it really easy to add another route that we can navigate to like so:
+These changes make it really easy to add more views that we can navigate to like so:
 
-we add a new enum to represent the new destinations
+we add the views into the ```Destination``` enum:
 
 ```swift
-enum SecondaryDestination: NavigationDestination {
+enum Destination: Equatable {
+    case firstView(FirstViewModel)
+    case secondView(SecondViewModel)
     case thirdView(ThirdViewModel)
     case forthView(ForthViewModel)
 }
 ```
 
-We add another View extension for the view creation
+We add it to our navigator view extension:
 
 ```swift
-func secondaryNavigator(router: Router) -> some View {
+func navigator(router: Router) -> some View {
     self
-        .navigationDestination(for: SecondaryDestination.self) { destination in
+        .navigationDestination(for: Destination.self) { destination in
             switch destination {
+            case .firstView(let viewModel):
+                FirstView(viewModel: viewModel)
+                    .environment(router)
+            case .secondView(let viewModel):
+                SecondView(viewModel: viewModel)
+                    .environment(router)
             case .thirdView(let viewModel):
                 ThirdView(viewModel: viewModel)
                     .environment(router)
@@ -219,18 +221,17 @@ struct FirstView: View {
                     .bold()
                 
                 Button("Navigate to SecondView") {
-                    router.navigate(to: PrimaryDestination.secondView(.init(text: "second view from first view")))
+                    router.navigate(to: Destination.secondView(.init(text: "second view from first view")))
                 }
                 Button("Navigate to Third") {
-                    router.navigate(to: SecondaryDestination.thirdView(.init(text: "third view from first view")))
+                    router.navigate(to: Destination.thirdView(.init(text: "third view from first view")))
                 }
                 Button("Navigate to Forth") {
-                    router.navigate(to: SecondaryDestination.forthView(.init(text: "forth view from first view")))
+                    router.navigate(to: Destination.forthView(.init(text: "forth view from first view")))
                 }
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .background(.pink)
-            .secondaryNavigator(router: router)
     }
 }
 ```
