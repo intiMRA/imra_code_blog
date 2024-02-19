@@ -30,7 +30,7 @@ struct NextView: View {
 
 ```swift
 struct ContentView: View {
-    @State var stack = NavigationPath()
+    @State var stack = [String]()
     var body: some View {
         NavigationStack(path: $stack) {
             Button("Go to next view") {
@@ -66,7 +66,7 @@ enum Destination: Hashable {
 
 @Observable class Router {
    
-    var stack = NavigationPath()
+    var stack = [Destination]()
     
     func navigate(to destination: Destination) {
         stack.append(destination)
