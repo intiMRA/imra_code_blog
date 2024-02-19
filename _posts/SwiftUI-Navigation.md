@@ -170,6 +170,10 @@ The second View is essentially the same. We have ```@Environment(Router.self) va
 
 ![Fig 1](/imra_code_blog/assets/blog/swiftUI-navigation/recording-1.gif)
 
+Here is a diagram of the navigation:
+
+![Fig 2](/imra_code_blog/assets/blog/swiftUI-navigation/navigation-1.png)
+
 ### Extending Functionality
 
 These changes make it really easy to add more views that we can navigate to like so:
@@ -238,7 +242,11 @@ struct FirstView: View {
 
 Here is what it looks like:
 
-![Fig 2](/imra_code_blog/assets/blog/swiftUI-navigation/recording-2.gif)
+![Fig 3](/imra_code_blog/assets/blog/swiftUI-navigation/recording-2.gif)
+
+this is how our diagram looks like now:
+
+![Fig 4](/imra_code_blog/assets/blog/swiftUI-navigation/navigation-2.png)
 
 ## Take Aways
 
