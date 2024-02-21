@@ -37,8 +37,9 @@ export default function Post({ post, morePosts, preview }: Props) {
                 <title>{title}</title>
                 <meta property="og:image" content={post.ogImage.url} />
                 <meta property='twitter:image' content={post.ogImage.url} />
-                <meta name="twitter:image:src" content="https://github.com/intiMRA/imra_code_blog/blob/main/public/favicon/safari-pinned-tab.svg"/>
+                <meta name="twitter:image:src" content={post.ogImage.url}/>
                 <meta name="twitter:card" content='summary_large_image' />
+                <meta name="twitter:url" content="https://github.com"/>
               </Head>
               <PostHeader
                 title={post.title}
