@@ -35,11 +35,10 @@ export default function Post({ post, morePosts, preview }: Props) {
             <article className="mb-32">
               <Head>
                 <title>{title}</title>
-                <meta property="og:image" content={post.ogImage.url} />
+                <meta property="og:image:secure_url" content={post.ogImage.url} />
                 <meta property='twitter:image' content={post.ogImage.url} />
-                <meta name="twitter:image:src" content={post.ogImage.url}/>
+                <meta name="twitter:image:secure_url" content={post.ogImage.url}/>
                 <meta name="twitter:card" content='summary_large_image' />
-                <meta name="twitter:url" content="https://github.com"/>
               </Head>
               <PostHeader
                 title={post.title}
