@@ -36,10 +36,9 @@ const Meta = () => {
         name="description"
         content={`A blog where I post coding articles.`}
       />
-      <meta property="og:image" content={HOME_OG_IMAGE_URL} />
-      <meta property='twitter:image' content={HOME_OG_IMAGE_URL} />
-      <meta name="twitter:image:src" content={HOME_OG_IMAGE_URL}/>
-      <meta name="twitter:card" content='summary_large_image' />
+      <meta property="og:image:secure_url" content={HOME_OG_IMAGE_URL} />
+       <meta name="twitter:image:secure_url" content={HOME_OG_IMAGE_URL}/>
+       <meta name="twitter:card" content='summary_large_image' />
     </Head>
   )
 }
