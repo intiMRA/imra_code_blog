@@ -35,7 +35,7 @@ export default function Post({ post, morePosts, preview }: Props) {
             <article className="mb-32">
               <Head>
                 <title>{title}</title>
-                <meta property="og:image:secure_url" content="https://github.com/intiMRA/imra_code_blog/blob/main/public/favicon/safari-pinned-tab.svg" />
+                <meta property="og:image:secure_url" content={post.ogImage.url} />
                 <meta name="twitter:image:secure_url" content={post.ogImage.url}/>
                 <meta property="og:image" content={post.ogImage.url} />
                 <meta name="twitter:image" content={post.ogImage.url}/>
