@@ -37,6 +37,8 @@ export default function Post({ post, morePosts, preview }: Props) {
                 <title>{title}</title>
                 <meta property="og:image:secure_url" content={post.ogImage.url} />
                 <meta name="twitter:image:secure_url" content={post.ogImage.url}/>
+                <meta property="og:image" content={post.ogImage.url} />
+                <meta name="twitter:image" content={post.ogImage.url}/>
                 <meta name="twitter:card" content='summary_large_image' />
               </Head>
               <PostHeader
