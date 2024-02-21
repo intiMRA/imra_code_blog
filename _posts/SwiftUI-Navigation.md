@@ -82,13 +82,14 @@ enum Destination: Hashable {
 }
 ```
 
-Note that the enum take a viewModel as a parameter, this will make our lives easier later if we have to pass in different data depending on where we are navigating from. However, this is not always necessary. Having the destinations being represented as an enum  provides an easy way to create views later on without having to check for string constants.
+Note that the destination enum cases have view models as associated values, this will make our lives easier later if we have to pass in different data depending on where we are navigating from. However, this is not always necessary. Having the destinations being represented as an enum  provides an easy way to create views later on without having to check for string constants.
 
 ### Centralising View Creation
 
 The next idea I had was to extract the ```navigationDestination``` function and put it in a centralised place where it can be easily reused if we have different entry points for a View. This can be achieved by creating an extension of the View class like so:
 
 ```swift
+extension View {
     func navigator(router: Router) -> some View {
         self
             .navigationDestination(for: Destination.self) { destination in
@@ -102,13 +103,14 @@ The next idea I had was to extract the ```navigationDestination``` function and 
                 }
             }
     }
+}
 ```
 
 This way we do not need to repeat this same code whenever we are required to navigate to these views from another entry point. Note that this function takes in a router as a parameter, this is so we can enable navigation for the sub-views.
 
 ### Putting It To Use
 
-For simplicity I created two views called FirstView and Second View that are mostly identical for this example, I will also cut down on the code a little to make the article more concise you can always check the entire code on my GitHub. both these views have a view model that takes in a text and each view also has its own color so we can distinguish which view is which. The Content View can navigate to any of these two views, and the two views can navigate between each other.
+For simplicity I created two views called FirstView and Second View that are mostly identical for this example, I will also cut down on the code a little to make the article more concise, you can always check the entire code on my GitHub. both these views have a view model that takes in a text and each view also has its own color so we can distinguish which view is which. The Content View can navigate to any of these two views, and the two views can navigate between each other.
 
 ```swift
 struct ContentView: View {
@@ -192,8 +194,9 @@ enum Destination: Equatable {
 We add it to our navigator view extension:
 
 ```swift
-func navigator(router: Router) -> some View {
-    self
+extension View {
+    func navigator(router: Router) -> some View {
+        self
         .navigationDestination(for: Destination.self) { destination in
             switch destination {
             case .firstView(let viewModel):
@@ -210,6 +213,7 @@ func navigator(router: Router) -> some View {
                     .environment(router)
             }
         }
+    }
 }
 ```
 
@@ -250,5 +254,5 @@ this is how our diagram looks like now:
 
 ## Take Aways
 
-SwiftUI stack navigation improved the way to navigate between views a lot better! If we make the way we navigate in between views implicit we can elevate it even further, this way we can avoid unwanted behaviour and enforce well-structured and understandable code.
+SwiftUI stack navigation significantly improved ways to navigate between views! If we make the way we navigate in between views implicit we can elevate it even further, this way we can avoid unwanted behaviour and enforce well-structured and understandable code.
 Hopefully, you enjoyed the reading! and again the code used in this article can be found [here](https://github.com/intiMRA/SwiftUINavigation/tree/main/Navigation).
