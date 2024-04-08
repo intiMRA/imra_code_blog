@@ -1,13 +1,13 @@
 ---
 title: 'Date Organization In Swift'
 excerpt: 'Throughout my time developing Mobile applications for iOS, I have come across a problem with dates several times. They were all over the place! In this article I will talk about a way that I found very helpful to solve this issue.'
-coverImage: '${basePath}/assets/blog/date-organization/cover.png'
+coverImage: '${basePath}/assets/blog/date-organization/cover.jpeg'
 date: '2024-01-10T01:00:00Z'
 author:
   name: Inti Albuquerque
   picture: '${basePath}/assets/blog/authors/inti.jpg'
 ogImage:
-  url: '${basePath}/assets/blog/date-organization/cover.png'
+  url: '${basePath}/assets/blog/date-organization/cover.jpeg'
 ---
 
 Throughout my time developing Mobile applications for iOS, I have come across a problem with dates several times. They were all over the place! In this article I will talk about a way that I found very helpful to solve this issue. The code for this article can be found [here](https://github.com/intiMRA/DateHelper).
