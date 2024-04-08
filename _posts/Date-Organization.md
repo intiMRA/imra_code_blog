@@ -23,112 +23,57 @@ Often when developing Mobile applications, we do not think of future use cases f
 For the purpose of simplicity I will use some less complex date formats that are more easily understood. One being "dd-mm-yyyy" and the other being "dd mm yyyy", note that the "yyyy" is lower cased if uppercased it will have a potentially [unwanted effect](https://stackoverflow.com/questions/15133549/difference-between-yyyy-and-yyyy-in-nsdateformatter#:~:text=yyyy%20specifies%20the%20calendar%20year,should%20use%20the%20calendar%20year). 
 
 ``` swift
-    enum DateFormats: String {
-        case ddMmYyyySpaced = "dd mm yyyy"
-        case ddMmYyyyDashed = "dd-mm-yyyy"
-        private static let formatter = DateFormatter()
-        
-        static func format(date: Date, with format: DateFormats) -> String {
-            formatter.dateFormat = format.rawValue
-            return formatter.string(from: date)
-        }
-        
-        static func date(from string: String, with format: DateFormats) -> Date? {
-            formatter.dateFormat = format.rawValue
-            return formatter.date(from: string)
-        }
+enum DateFormats: String {
+    case ddMmYyyySpaced = "dd mm yyyy"
+    case ddMmYyyyDashed = "dd-mm-yyyy"
+    private static let formatter = DateFormatter()
+    
+    static func format(date: Date, with format: DateFormats) -> String {
+        formatter.dateFormat = format.rawValue
+        return formatter.string(from: date)
     }
+    
+    static func date(from string: String, with format: DateFormats) -> Date? {
+        formatter.dateFormat = format.rawValue
+        return formatter.date(from: string)
+    }
+}
 ```
 
 Here we have put the formats into an enum with clear labels so people in the future can use the formats with ease rather than spelling the date format each time.
 
-### Subclassing
+### Useful Date Extensions
 
-Now consider the following examples, what do you think it will print?
+Now we need a way to use these date formats in our code without having to write to much boiler plate code.
 
-```swift
-class Dog {
-    let name: String
+``` swift
+extension Date {
+    func addingDays(_ days: Int, calendar: Calendar = .current) -> Date? {
+       calendar.date(byAdding: .day, value: days, to: self)
+    }
     
-    init(name: String) {
-        self.name = name
+    func isSameDay(as date: Date, calendar: Calendar = .current) -> Bool {
+        return calendar.isDate(self, equalTo: date, toGranularity: .day)
     }
-    func eat() {
-        print("A Dog named \(name) eats food everyday")
+    
+    func daysFrom(date: Date, calendar: Calendar = .current) -> Int? {
+        if let days = calendar.dateComponents([.day], from: self, to: date).day {
+            return days
+        }
+        return nil
     }
-}
-
-class GoldenRetriever: Dog {
-    func eat(food: String = "dog food") {
-        print("A GoldenRetriever named \(name) eats \(food) everyday")
+    
+    static func date(from string: String, with format: DateFormats) -> Date? {
+        DateFormats.date(from: string, with: format)
     }
-let dog = Dog(name: "Rex")
-dog.eat()
-let retriever = GoldenRetriever(name: "Max")
-retriever.eat()
+    
+    static func dateString(from date: Date, with format: DateFormats) -> String {
+        DateFormats.format(date: date, with: format)
+    }
 }
 ```
 
-In this example we have a protocol a class, 'Dog' and another class, 'GoldenRetriever', that is a subclass of 'Dog'. We have overloading methods here with default arguments, a recipe for ambiguity!
-
-Chances are you are confused about what it will output, don't worry I did too. This is what we get:
-
-1. A Dog named Rex eats food every day
-2. A Dog named Max eats food every day
-
-Both call the ```func eat()``` on 'Dog' class, which might be unexpected for the 'GoldenRetriever' object since the only method in the class is ```func eat(food: String = "dog food")```. It seems like the method with the least parameters are prioritised. Now what happens if we add the food parameter?
-
-```swift
-let dog = Dog(name: "Rex")
-dog.eat()
-let retriever = GoldenRetriever(name: "Max")
-retriever.eat(food: "watermelon")
-```
-
-1. A Dog named Rex eats food every day
-2. A GoldenRetriever named Max eats watermelon every day
-
-Number one is calling the ```func eat()``` on the 'Dog' class, and now number two is calling ```func eat(food: String = "dog food")``` on the 'GoldenRetriever' class. Having a required parameter makes it more obvious what method will be called, especially if we are overriding an overloaded method like so:
-
-```swift
-class Dog {
-    let name: String
-    
-    init(name: String) {
-        self.name = name
-    }
-    
-    func eat() {
-        print("A Dog named \(name) eats food everyday")
-    }
-    
-    func eat(food: String = "dog food") {
-        print("A Dog named \(name) eats \(food) everyday")
-    }
-}
-
-class GoldenRetriever: Dog {
-    override func eat(food: String = "dog food") {
-        print("A GoldenRetriever named \(name) eats \(food) everyday")
-    }
-}
-
-let dog = Dog(name: "Rex")
-dog.eat()
-let retriever = GoldenRetriever(name: "Max")
-retriever.eat()
-```
-
-This again will print 'A Dog named Rex/Max eats food every day' for both of these calls, so a better idea would be to remove the default parameter at least in the sub class.
-
-```swift
-class GoldenRetriever: Dog {
-    override func eat(food: String) {
-        print("A GoldenRetriever named \(name) eats \(food) everyday")
-    }
-```
-
-Now it is less ambiguous what method is being called because the argument is required.
+we now have a wrapper around date that we can use do format dates in a easy way.
 
 ## DisfavoredOverload
 
