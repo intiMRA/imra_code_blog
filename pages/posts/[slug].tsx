@@ -32,14 +32,19 @@ export default function Post({ post, morePosts, preview }: Props) {
           <PostTitle>Loading…</PostTitle>
         ) : (
           <>
-            <article className="mb-32">
+            <article className='mb-32'>
               <Head>
                 <title>{title}</title>
-                <meta property="og:image:secure_url" content={post.ogImage.url} />
-                <meta name="twitter:image:secure_url" content={post.ogImage.url}/>
-                <meta property="og:image" content={post.ogImage.url} />
-                <meta name="twitter:image" content={post.ogImage.url}/>
-                <meta name="twitter:card" content='summary_large_image' />
+                <meta property='og:type' content='website'/>
+                <meta property='og:url' content='https://intimra.github.io/imra_code_blog/' />
+                <meta property='og:title' content={post.title} />
+                <meta property='og:image' content={post.ogImage.url}/>
+                <meta property='og:description' content={post.excerpt} />
+                <meta property='og:site_name' content='IMRA Code Blog' />
+                <meta name='twitter:title' content='IMRA Code Blog'/>
+                <meta name='twitter:description' content={post.excerpt}/>
+                <meta name='twitter:image:src' content={post.ogImage.url}/>
+                <meta name='twitter:card' content='summary_large_image' />
               </Head>
               <PostHeader
                 title={post.title}
