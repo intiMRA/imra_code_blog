@@ -34,17 +34,17 @@ export default function Post({ post, morePosts, preview }: Props) {
           <>
             <article className='mb-32'>
               <Head>
-                <title>{title}</title>
                 <meta property='og:type' content='website'/>
                 <meta property='og:url' content='https://intimra.github.io/imra_code_blog/' />
                 <meta property='og:title' content={post.title} />
-                <meta property='og:image' content={post.ogImage.url}/>
-                <meta property='og:description' content={post.excerpt} />
+                <meta property='og:image' content='https://intimra.github.io${post.ogImage.url}'/>
+                <meta property='og:description' content={post.excerpt}/>
                 <meta property='og:site_name' content='IMRA Code Blog' />
                 <meta name='twitter:title' content='IMRA Code Blog'/>
                 <meta name='twitter:description' content={post.excerpt}/>
                 <meta name='twitter:image:src' content={post.ogImage.url}/>
-                <meta name='twitter:card' content='summary_large_image' />
+                <meta name='twitter:card' content='summary_large_image'/>
+                <title>{title}</title>
               </Head>
               <PostHeader
                 title={post.title}
