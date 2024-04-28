@@ -1,13 +1,13 @@
 ---
 title: 'Date Organization In Swift'
 excerpt: 'If you are using DateFormatter and have inconsistent date formats throughout your app, then you would that dates can be a little bit of a pain in iOS. Throughout my time developing Mobile applications for iOS, I have come across several problems with dates several times. They were all over the place! In this article, I will talk about a way that I found very helpful to solve the date inconsistency issue.'
-coverImage: '${basePath}/assets/blog/date-organization/cover.jpeg'
+coverImage: '${basePath}/assets/blog/date-organization/cover.png'
 date: '2024-01-10T01:00:00Z'
 author:
   name: Inti Albuquerque
   picture: '${basePath}/assets/blog/authors/inti.jpg'
 ogImage:
-  url: '${basePath}/assets/blog/date-organization/cover.jpeg'
+  url: '${basePath}/assets/blog/date-organization/cover.png'
 ---
 
 If you are using DateFormatter and have inconsistent date formats throughout your app, then you would that dates can be a little bit of a pain in iOS. Throughout my time developing Mobile applications for iOS, I have come across several problems with dates several times. They were all over the place! In this article, I will talk about a way that I found very helpful to solve the date inconsistency issue. The code for this article can be found [here](https://github.com/intiMRA/DateHelper).
