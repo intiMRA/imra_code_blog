@@ -37,7 +37,7 @@ export default function Post({ post, morePosts, preview }: Props) {
                 <meta property='og:type' content='website'/>
                 <meta property='og:url' content='https://intimra.github.io/imra_code_blog/' />
                 <meta property='og:title' content={post.title} />
-                <meta property='og:image' content='https://intimra.github.io${post.ogImage.url}'/>
+                <meta property='og:image' content={post.ogImage.url}/>
                 <meta property='og:description' content={post.excerpt}/>
                 <meta property='og:site_name' content='IMRA Code Blog' />
                 <meta name='twitter:title' content='IMRA Code Blog'/>
