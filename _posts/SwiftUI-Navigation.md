@@ -7,7 +7,7 @@ author:
   name: Inti Albuquerque
   picture: '${basePath}/assets/blog/authors/inti.jpg'
 ogImage:
-  url: 'https://intimra.github.io${basePath}/assets/blog/swiftUI-navigation/cover.png'
+  url: '${basePath}/assets/blog/swiftUI-navigation/cover.png'
 ---
 
 Recently I was playing around with navigation in SwiftUI and came up with a way to navigate between screens using the iOS 16 stack navigation feature. I found it interesting and decided to share, you can find the code [here](https://github.com/intiMRA/SwiftUINavigation/tree/main/Navigation). Let's set sail!
