@@ -1,6 +1,6 @@
 ---
 title: 'Simplifying View Logic Using Enums'
-excerpt: 'When Programming views in SwiftUI, we often need to deal with states that are dependent on many variable, when that happens the logic in the view quickly becomes messy and not as readable. In this article we will explore a way to make that logic lighter and more readable using enums to represent these states.'
+excerpt: 'When Programming views in SwiftUI, we often need to deal with states dependent on many variables, when that happens the logic in the view quickly becomes messy and not as readable. In this article, we will explore how to make that logic lighter and more readable using enums to represent these states.'
 coverImage: '${basePath}/assets/blog/implicit-view-logic-using-enums/cover.png'
 date: '2024-06-25T01:00:00Z'
 author:
@@ -10,12 +10,12 @@ ogImage:
   url: '${basePath}/assets/blog/implicit-view-logic-using-enums/cover.png'
 ---
 
-When Programming views in SwiftUI, we often need to deal with states that are dependent on many variable, when that happens the logic in the view quickly becomes messy and not as readable. In this article we will explore a way to make that logic lighter and more readable using enums to represent these states.
+When Programming views in SwiftUI, we often need to deal with states dependent on many variables, when that happens the logic in the view quickly becomes messy and not as readable. In this article, we will explore how to make that logic lighter and more readable using enums to represent these states.
 The code for this article can be found [here](https://github.com/intiMRA/Simplifying-View-Logic-Using-Enums).
 
 ## The Problem
 
-If statements are great, but we have all have seen some bad usage of them were it quickly becomes unreadable an requires you to thoroughly study the code to understand what is going on. Here is an example:
+If statements are great, but we have all seen some bad usage of them where it quickly becomes unreadable and requires you to thoroughly study the code to understand what is going on. Here is an example:
 
 ```Swift
 if viewModel.colorsModel.shouldShowColorOne, viewModel.colorsModel.shouldShowColorTwo {
@@ -56,14 +56,14 @@ else if viewModel.colorsModel.shouldShowColorTwo {
 }
 ```
 
-Here is how the app looks like:
+Here is what the app looks like:
 ![Fig 1](/imra_code_blog/assets/blog/implicit-view-logic-using-enums/basic.gif)
 
-So what is going on here? We have three booleans that we have to keep track of ```viewModel.colorsModel.shouldShowColorOne, viewModel.colorsModel.shouldShowColorTwo and viewModel.colorsModel.mix```. we can see that ```viewModel.colorsModel.mix``` is dependent on the other two values to do anything. We can also see that the ```shouldShowColor``` values can each can allow the view to show something as well as having a different outcome when they are both together. This logic is not very implicit and it is difficult to know what is going on here. Here is where enums can come in to help.
+So what is going on here? We have three booleans that we have to keep track of ```viewModel.colorsModel.shouldShowColorOne, viewModel.colorsModel.shouldShowColorTwo and viewModel.colorsModel.mix```. We can see that ```viewModel.colorsModel.mix``` is dependent on the other two values. We can also see that the ```shouldShowColor``` values can each allow the view to show something as well as having a different outcome when they are both together. This logic is not very implicit and it is difficult to know what is going on here. This is where enums can come for the rescue.
 
 ## Using Enums
 
-Enums are great to represent states because they are implicit and have well defined values. For these examples we can explore 4 different distinct states: ```showBothColors, showMixedColors, showColor and emptyState```, each of these will have values associated to them. We can let our view Consume these states instead like so:
+Enums are great for representing states, they are implicit and have well-defined values. For these examples, we can explore 4 different distinct states: ```showBothColors, showMixedColors, showColor and emptyState```, each of these will have values associated with them. Now our view can consume these states instead of relying on the boolean values directly:
 
 ```Swift
 switch viewModel.viewState {
@@ -98,7 +98,7 @@ case .emptyState:
 }
 ```
 
-And this is how our viewModel looks like:
+And this is what our viewModel looks like:
 
 ```Swift
 @Observable
@@ -137,7 +137,7 @@ class ContentViewModel {
         updateState()
     }
     
-    func mixedBinging() -> Binding<Bool> {
+    func mixedBinding() -> Binding<Bool> {
         .init {
             self.colorsModel.mix
         } set: { newValue in
@@ -153,11 +153,11 @@ class ContentViewModel {
 
 This gives us two things:
 
-1. We can now just take a look at the view and know what it is going on
-2. We can unit test the display logic, given that it is in the view model
+1. We can now see what is going on in the view much easier because of the distinct and human readable states
+2. We can unit test the display logic, given that it is now in the view model
 
 ## Take Away
 
-Whenever dealing with specific states, enums can be an ideal tool to depict what they are. Using enums instead of booleans for View display logic can make the logic easier to read and potentially make that logic unit testable and finally we can keep the entire logic for the display in one place instead of having it split across view and view model.
+Whenever dealing with specific states, enums can be an ideal tool to represent these. Using enums instead of booleans for View display can make the logic easier to read and potentially make that code unit testable, finally, we can keep the entire logic for the display in one place instead of having it split across view and view model, which allows for easier updates to the code.
 
-Hope you guys had fun reading this and as always the code can be found The code for this article can be found [here](https://github.com/intiMRA/Simplifying-View-Logic-Using-Enums).
+Hope you guys had fun reading this, and as always the code can be found [here](https://github.com/intiMRA/Simplifying-View-Logic-Using-Enums).
